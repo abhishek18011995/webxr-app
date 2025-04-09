@@ -32,9 +32,9 @@ const Cube = ({ store }) => {
                 {/* Mesh with touch interaction */}
                 <mesh
                     ref={cubeRef}
-                    position={[0, 0, -10]}
+                    position={[0, 0, -2]}
                     pointerEventsType={{ deny: 'grab' }}
-                    scale={[3, 3, 3]}
+                    scale={[1,1,1]}
                     onPointerDown={handleTouch} // Handle touch interaction
                 >
                     <boxGeometry />
