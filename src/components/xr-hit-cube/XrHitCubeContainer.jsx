@@ -12,7 +12,11 @@ function XrHitCubeContainer() {
             <button onClick={() => store.enterAR()}>Enter AR</button>
             <Canvas>
                 {/* <XR store={store} sessionInit={{ requiredFeatures: ['hit-test', 'local-floor'] }}> */}
-                <XR store={store} sessionInit={{ requiredFeatures: ['hit-test'] }}>
+                <XR store={store}
+                    sessionInit={{
+                        requiredFeatures: ['hit-test', 'local-floor', 'bounded-floor'],
+                        optionalFeatures: ['bounded-floor', 'plane-detection', 'viewer']
+                    }}>
                     <XrHitReticle />
                 </XR>
             </Canvas>

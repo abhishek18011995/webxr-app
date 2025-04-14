@@ -1,8 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { XRHitTest } from '@react-three/xr';
 import { Box, OrbitControls } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 import XrHitCube from './XrHitCube';
+
+const matrixHelper = new THREE.Matrix4()
+let position ;
+const hitTestPosition = new Vector3()
 
 const XrHitReticle = () => {
     const reticleRef = useRef(null);
@@ -10,6 +16,11 @@ const XrHitReticle = () => {
 
     const [red, setRed] = useState(false);
     const [placedObjects, setPlacedObjects] = useState([]);
+
+    useFrame(() => {
+        reticleRef.current?.position.copy(hitTestPosition);
+        console.log('useFrame');
+    })
 
     const handleTouch = () => {
         console.log('ring touched!'); // Log touch event
@@ -21,31 +32,24 @@ const XrHitReticle = () => {
     };
 
     const handleHitTestResults = (results, getWorldMatrix) => {
-        //   console.log(results);
-        //   console.log(getWorldMatrix);
-        //   setRed(!red);
         if (results.length > 0 && reticleRef.current) {
-            const hitMatrix = new THREE.Matrix4();
-            const success = getWorldMatrix(hitMatrix, results[0]);
+            getWorldMatrix(matrixHelper, results[0]);
+            hitTestPosition.setFromMatrixPosition(matrixHelper);
+            console.log(matrixHelper);
 
-            if (success) {
-                // console.log('hitmatrix');
-                reticleRef.current.visible = true;
-                reticleRef.current.matrix.copy(hitMatrix);
-                reticleRef.current.matrix.decompose(
-                    reticleRef.current.position,
-                    reticleRef.current.quaternion,
-                    reticleRef.current.scale
-                );
+            ///// temp
+            const temPosition = new THREE.Vector3();
+            const quaternion = new THREE.Quaternion();
+            const scale = new THREE.Vector3();
+            matrixHelper.decompose(temPosition, quaternion, scale);
+            reticleRef.current.quaternion.copy(quaternion);
 
-                // console.log(reticleRef.current.rotation);
-                reticleRef.current.rotation.set(-(Math.PI / 2), 0, 0);
+            console.log('quaternion', quaternion);
 
-                // console.log('jhgjkhjkg', reticleRef.current.rotation);
-                // reticleRef.current.updateMatrixWorld(true); // Update the world matrix
-            }
-        } else if (reticleRef.current) {
-            reticleRef.current.visible = false;
+            reticleRef.current.rotation.set(-(Math.PI / 2), '0', '0'); 
+            reticleRef.current.visible = true;
+
+            // reticleRef.current.updateMatrix();
         }
     };
 
@@ -62,21 +66,19 @@ const XrHitReticle = () => {
 
             <mesh
                 ref={reticleRef}
-                visible={false}
-                position={[0, 0, -1]}
+                visible={true}
+                position={position}
+                matrixAutoUpdate={true}
                 rotateX={Math.PI / 2} // Rotate the ring to be horizontal
                 onPointerDown={handleTouch} // Handle touch interaction
             >
-                <ringGeometry args={[0.03, 0.05, 32]} />
+                <ringGeometry args={[0.01, 0.02, 32]} />
+
                 <meshBasicMaterial color={red ? 'red' : 'white'} />
             </mesh>
 
             {placedObjects.map((obj, index) => (
-                // <mesh key={index} position={obj.position}>
-                //     <Box args={[0.1, 0.1, 0.1]} />
-                //     <meshStandardMaterial color="blue" />
-                // </mesh>  
-               <XrHitCube key={index} index={index} position={obj.position} /> 
+                <XrHitCube key={index} index={index} position={obj.position} />
             ))}
         </>
     );
