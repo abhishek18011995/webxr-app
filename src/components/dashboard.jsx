@@ -9,6 +9,7 @@ function Dashboard() {
       <h1>Dashboard</h1>      
       <button onClick={() => navigate('/cube')}>Go to Cube</button> 
       <button onClick={() => navigate('/xrhitcube')}>Go to XR Hit Cube</button> 
+      <button onClick={() => navigate('/xrpanel')}>Go to XR Panel</button> 
     </div>
   );
 }

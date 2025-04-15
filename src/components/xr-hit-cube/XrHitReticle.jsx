@@ -72,7 +72,7 @@ const XrHitReticle = () => {
                 rotateX={Math.PI / 2} // Rotate the ring to be horizontal
                 onPointerDown={handleTouch} // Handle touch interaction
             >
-                <ringGeometry args={[0.01, 0.02, 32]} />
+                <ringGeometry args={[0.1, 0.2, 32]} />
 
                 <meshBasicMaterial color={red ? 'red' : 'white'} />
             </mesh>
