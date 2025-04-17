@@ -7,7 +7,7 @@ const XrPanel = () => {
     const navigate = useNavigate();
     const relativePosition = [0, 1, -2];
     const initPanel = () => {
-        navigate('/xrpanel/step1');
+        navigate('/xrpanel/feature');
     }
 
     return (
