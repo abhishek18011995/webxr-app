@@ -117,8 +117,8 @@ const XrStep1 = () => {
                     </Text>
                 </mesh>
 
-                <XRLayer position={[0, 1.5, -1]} onClick={() => video.play()} scale={0.5} src={video} />
-                <XRLayer position={[0, 2.5, -2]} scale={0.5} src={renderHtml}/>
+                <XRLayer position={[0, 1.8, -1]} onClick={() => video.play()} scale={0.5} src={video} />
+                <XRLayer position={[0, 2.9, -2]} scale={0.5} src={renderHtml}/>
                 {/* <XRLayer position={[0, 1.5, -1]} scale={0.5}>
                     <mesh>
                         <boxGeometry />
